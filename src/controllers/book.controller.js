@@ -1,5 +1,9 @@
-const book = (req, res) => {
+const add = (req, res) => {};
+
+const all = (req, res) => {
   res.status(200).send('book OK!');
 };
 
-module.exports = { book };
+const bookById = (req, res) => {};
+
+module.exports = { all };
