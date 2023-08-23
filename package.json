@@ -1,0 +1,25 @@
+{
+  "name": "vaca-backend",
+  "version": "1.0.0",
+  "description": "vaca rest api services",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "build": "node src/index.js"
+  },
+  "author": "kelompok 7",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "latest",
+    "prettier": "latest"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "jsonwebtoken": "^9.0.1",
+    "mysql2": "^3.6.0",
+    "sequelize": "^6.6.5"
+  }
+}

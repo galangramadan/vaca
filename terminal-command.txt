@@ -1,0 +1,9 @@
+Create Model
+    Books:
+    sequelize model:generate --name books --attributes title:string,image:string,author:string,description:text,category_id:integer
+    Categories:
+    sequelize model:generate --name categories --attributes name:string, image:string
+
+
+Migrate
+    sequelize db:migrate
