@@ -1,34 +1,40 @@
 const { books, users } = require('../models');
 
 const addBook = async (req, res) => {
-  const userId = req.user.id;
-  const { title, image, author, description, category_id } = req.body;
+  try {
+    const userId = req.user.id;
+    const { title, image, author, description, category_id } = req.body;
 
-  const user = await users.findOne({
-    where: { id: userId },
-  });
-
-  if (user.role !== 'admin')
-    return res.status(403).send({
-      message: 'forbidden, only admin can access',
+    const user = await users.findOne({
+      where: { id: userId },
     });
 
-  if (!title || !image || !author || !description || !category_id)
-    return res.status(400).send({
-      message: 'all field must be filled!',
+    if (user.role !== 'admin')
+      return res.status(403).send({
+        message: 'forbidden, only admin can access',
+      });
+
+    if (!title || !image || !author || !description || !category_id)
+      return res.status(400).send({
+        message: 'all field must be filled!',
+      });
+
+    await books.create({
+      title: title,
+      image: image,
+      author: author,
+      description: description,
+      category_id: category_id,
     });
 
-  await books.create({
-    title: title,
-    image: image,
-    author: author,
-    description: description,
-    category_id: category_id,
-  });
-
-  res.status(201).send({
-    messsage: 'book added successfully',
-  });
+    res.status(201).send({
+      messsage: 'book added successfully',
+    });
+  } catch (error) {
+    res.status(400).send({
+      message: error,
+    });
+  }
 };
 
 const allBooks = async (req, res) => {
