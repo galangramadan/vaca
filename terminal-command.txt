@@ -9,3 +9,14 @@ Create Model
 
 Migrate
     sequelize db:migrate
+
+
+Seeders
+    Create:
+    sequelize seed:generate --name demo-tableName
+
+    Run:
+    sequelize db:seed:all
+
+    Undo:
+    sequelize db:seed:undo:all
