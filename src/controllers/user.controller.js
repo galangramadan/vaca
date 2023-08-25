@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { users } = require('../models');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('../utils/cloudinary');
 
 const register = async (req, res) => {
   try {
@@ -81,4 +82,31 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const avatar = async (req, res) => {
+  try {
+    if (!req.file.path)
+      return res.status(400).send({
+        message: 'select an image!',
+      });
+
+    const userId = req.user.id;
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    await users.update(
+      {
+        avatar: result.secure_url,
+      },
+      { where: { id: userId } }
+    );
+
+    return res.status(201).send({
+      message: 'avatar uploaded successfully',
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: error,
+    });
+  }
+};
+
+module.exports = { register, login, avatar };

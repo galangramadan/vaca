@@ -5,7 +5,6 @@ const addBook = async (req, res) => {
   try {
     const userId = req.user.id;
     const { title, author, description, category_id } = req.body;
-    console.log(req.file.path);
 
     const user = await users.findOne({
       where: { id: userId },
