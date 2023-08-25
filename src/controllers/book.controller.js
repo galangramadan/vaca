@@ -1,9 +1,11 @@
 const { books, users } = require('../models');
+const cloudinary = require('../utils/cloudinary');
 
 const addBook = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { title, image, author, description, category_id } = req.body;
+    const { title, author, description, category_id } = req.body;
+    console.log(req.file.path);
 
     const user = await users.findOne({
       where: { id: userId },
@@ -14,14 +16,16 @@ const addBook = async (req, res) => {
         message: 'forbidden, only admin can access',
       });
 
-    if (!title || !image || !author || !description || !category_id)
+    if (!title || !req.file.path || !author || !description || !category_id)
       return res.status(400).send({
         message: 'all field must be filled!',
       });
 
+    const result = await cloudinary.uploader.upload(req.file.path);
+
     await books.create({
       title: title,
-      image: image,
+      image: result.secure_url,
       author: author,
       description: description,
       category_id: category_id,
