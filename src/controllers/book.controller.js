@@ -1,4 +1,4 @@
-const { books, users } = require('../models');
+const { books, users, categories } = require('../models');
 const cloudinary = require('../utils/cloudinary');
 
 const addBook = async (req, res) => {
@@ -18,6 +18,15 @@ const addBook = async (req, res) => {
     if (!title || !req.file.path || !author || !description || !category_id)
       return res.status(400).send({
         message: 'all field must be filled!',
+      });
+
+    const category = await categories.findOne({
+      where: { id: category_id },
+    });
+
+    if (category == null)
+      return res.status(404).send({
+        message: 'category not found',
       });
 
     const result = await cloudinary.uploader.upload(req.file.path);

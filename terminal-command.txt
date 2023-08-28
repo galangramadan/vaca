@@ -17,6 +17,7 @@ Seeders
 
     Run:
     sequelize db:seed:all
+    sequelize db:seed --seed seederfilename.js
 
     Undo:
     sequelize db:seed:undo:all

@@ -24,9 +24,9 @@ const register = async (req, res) => {
       message: 'register success',
     });
   } catch (error) {
-    console.log(error);
     return res.status(400).send({
-      message: error,
+      message: 'something went wrong',
+      error: error,
     });
   }
 };
@@ -103,6 +103,7 @@ const avatar = async (req, res) => {
       message: 'avatar uploaded successfully',
     });
   } catch (error) {
+    console.log(error);
     return res.status(400).send({
       message: error,
     });
