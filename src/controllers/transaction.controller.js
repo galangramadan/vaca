@@ -29,6 +29,19 @@ const newTransactions = async (req, res) => {
         message: 'pricing not found',
       });
 
+    const pendingTransaction = await transactions.findOne({
+      where: {
+        pricing_id: pricingDetail.id,
+        user_id: user.id,
+        status: 'pending',
+      },
+    });
+
+    if (pendingTransaction)
+      return res.status(400).send({
+        message: `please complete the previous transaction first`,
+      });
+
     const transactionDetail = await transactions.create({
       title: pricingDetail.title,
       price: pricingDetail.price,
