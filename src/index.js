@@ -4,6 +4,7 @@ const cors = require('cors');
 const bookRoute = require('./routes/book.route');
 const userRoute = require('./routes/user.route');
 const pricingRoute = require('./routes/pricing.route');
+const transactionRoute = require('./routes/transaction.route');
 const { sequelize } = require('./models');
 
 const PORT = process.env.SERVER_PORT;
@@ -25,6 +26,7 @@ sequelize
 app.use('/api/user', userRoute);
 app.use('/api/book', bookRoute);
 app.use('/api/pricing', pricingRoute);
+app.use('/api/transaction', transactionRoute);
 
 app.listen(PORT, () => {
   console.log('Server is running on ' + PORT);

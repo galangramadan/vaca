@@ -3,12 +3,12 @@ const { pricing, users } = require('../models');
 const allPricing = async (req, res) => {
   try {
     const result = await pricing.findAll();
-    res.status(200).send({
+    return res.status(200).send({
       message: 'data retrieved successfully',
       data: result,
     });
   } catch (error) {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'something went wrong',
       data: error,
     });
@@ -48,11 +48,11 @@ const updatePricing = async (req, res) => {
       }
     );
 
-    res.status(201).send({
+    return res.status(201).send({
       message: 'pricing updated successfully',
     });
   } catch (error) {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'something went wrong',
       data: error,
     });
