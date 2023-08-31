@@ -58,10 +58,41 @@ const newTransactions = async (req, res) => {
       data: transactionDetail,
     });
   } catch (error) {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'something went wrong',
     });
   }
 };
 
-module.exports = { newTransactions };
+const transactionById = async (req, res) => {
+  try {
+    const transactionId = parseInt(req.params.transactionId);
+    console.log(transactionId);
+    const userId = req.user.id;
+
+    const result = await transactions.findOne({
+      where: { id: transactionId },
+    });
+
+    const user = await users.findOne({
+      where: { id: userId },
+    });
+
+    if (user.id == result.user_id || user.role == 'admin') {
+      return res.status(200).send({
+        message: 'data retrieved successfully',
+        data: result,
+      });
+    } else {
+      return res.status(403).send({
+        message: 'forbidden, only admin or its user can access this data ',
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      message: 'something went wrong',
+    });
+  }
+};
+
+module.exports = { newTransactions, transactionById };
