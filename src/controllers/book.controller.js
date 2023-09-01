@@ -80,7 +80,7 @@ const bookById = async (req, res) => {
 
     return res.status(200).send({
       message: 'data retrieved successfully',
-      dasta: result,
+      data: result,
     });
   } catch (error) {
     return res.status(400).send({
@@ -89,4 +89,105 @@ const bookById = async (req, res) => {
   }
 };
 
-module.exports = { allBooks, bookById, addBook };
+const bookByTitle = async (req, res) => {
+  try {
+    const bookQuery = req.query.title;
+
+    const result = await books.findOne({
+      where: { title: bookQuery },
+    });
+
+    if (result == null)
+      return res.status(404).send({
+        message: 'data not found',
+        data: result,
+      });
+
+    return res.status(200).send({
+      message: 'data retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: error,
+    });
+  }
+};
+
+const allCategories = async (req, res) => {
+  try {
+    const result = await categories.findAll();
+
+    return res.status(200).send({
+      message: 'data retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: error,
+    });
+  }
+};
+
+const bookByCategories = async (req, res) => {
+  try {
+    const categoryName = String(req.params.name);
+    const categoryId = await categories.findOne({
+      where: { name: categoryName },
+    });
+
+    const result = await books.findAll({
+      where: { category_id: categoryId.id },
+    });
+
+    if (result == null)
+      return res.status(404).send({
+        message: 'data not found',
+        data: result,
+      });
+
+    return res.status(200).send({
+      message: 'data retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: error,
+    });
+  }
+};
+
+const deleteBook = async (req, res) => {
+  try {
+    const bookId = parseInt(req.params.bookId);
+
+    const result = await books.findOne({
+      where: { id: bookId },
+    });
+
+    if (result == null)
+      return res.status(404).send({
+        message: 'data not found',
+        data: result,
+      });
+
+    return res.status(200).send({
+      message: 'data retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: error,
+    });
+  }
+};
+
+module.exports = {
+  allBooks,
+  bookById,
+  bookByTitle,
+  addBook,
+  allCategories,
+  bookByCategories,
+  deleteBook,
+};

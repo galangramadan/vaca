@@ -11,7 +11,8 @@
   "license": "MIT",
   "devDependencies": {
     "nodemon": "latest",
-    "prettier": "latest"
+    "prettier": "latest",
+    "sequelize-cli": "^6.6.1"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
