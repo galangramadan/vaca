@@ -112,6 +112,7 @@ const avatar = async (req, res) => {
   }
 };
 
+// get detail user
 const userDetail = async (req, res) => {
   try {
     const {id} = req.params
@@ -139,6 +140,7 @@ const userDetail = async (req, res) => {
   }
 };
 
+// post update user
 const updateUser = async (req, res) => {
   try {
     const  userId = req.user.id;
@@ -167,6 +169,7 @@ const updateUser = async (req, res) => {
   }
 }
 
+// change password (update user password)
 const changePassword = async (req, res) => {
   try {
     const userId = req.user.id
@@ -211,6 +214,7 @@ const changePassword = async (req, res) => {
   }
 }
 
+// delete user data
 const deleteUser = async (req, res) => {
   try {
     const userId = req.user.id
