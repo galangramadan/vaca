@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const adminPassword = bcrypt.hashSync('admin', 8);
+    const adminPassword = bcrypt.hashSync('Admin12#', 8);
     const userPassword = bcrypt.hashSync('user1', 8);
 
     /**
