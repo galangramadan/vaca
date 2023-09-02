@@ -150,7 +150,7 @@ const allTransactions = async (req, res) => {
   }
 };
 
-const transactionStatus = async (req, res) => {
+const transactionStatus = async (req, res, next) => {
   try {
     const transactionId = parseInt(req.params.transactionId);
     const userIsLoginId = req.user.id;
@@ -169,6 +169,15 @@ const transactionStatus = async (req, res) => {
         message: 'no transaction id provided',
       });
 
+    const transaction = await transactions.findOne({
+      where: { id: transactionId },
+    });
+
+    if (transaction.status != 'pending')
+      return res.status(400).send({
+        message: 'status has been changed before, cannot change status',
+      });
+
     if (req.body.status != 'success' && req.body.status != 'failed')
       return res.status(400).send({
         message: 'invalid input',
@@ -181,17 +190,14 @@ const transactionStatus = async (req, res) => {
       { where: { id: transactionId } }
     );
 
-    const result = await transactions.findOne(
-      {
-        status: req.body.status,
-      },
-      { where: { id: transactionId } }
-    );
+    if (req.body.status == 'failed')
+      return res.status(201).send({
+        message: 'status updated successfully',
+      });
 
-    return res.status(201).send({
-      message: 'status updated successfully',
-      data: result,
-    });
+    req.transaction = transaction;
+
+    next();
   } catch (error) {
     return res.status(400).send({
       message: 'something went wrong',
