@@ -1,4 +1,4 @@
-const { transactions, pricing, users, subscriptions } = require('../models');
+const { pricing, subscriptions } = require('../models');
 
 const newSubscription = async (req, res) => {
   try {
@@ -29,4 +29,29 @@ const newSubscription = async (req, res) => {
   }
 };
 
-module.exports = { newSubscription };
+const subscriptionById = async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const userIsLoginId = req.user.id;
+
+    if (userId != userIsLoginId)
+      return res.status(403).send({
+        message: 'forbidden, only its user can access this data',
+      });
+
+    const result = await subscriptions.findAll({
+      where: { user_id: userId },
+    });
+
+    return res.status(200).send({
+      message: 'data retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: 'something went wrong',
+    });
+  }
+};
+
+module.exports = { newSubscription, subscriptionById };
