@@ -15,7 +15,7 @@ const newSubscription = async (req, res) => {
     await subscriptions.create({
       title: req.transaction.title,
       expiry_date: expiryDate,
-      user_id: userId,
+      user_id: req.transaction.user_id,
       transaction_id: req.transaction.id,
     });
 

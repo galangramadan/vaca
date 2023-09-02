@@ -1,4 +1,4 @@
-const { books, users, categories } = require('../models');
+const { books, users, categories, subscriptions } = require('../models');
 const cloudinary = require('../utils/cloudinary');
 
 const addBook = async (req, res) => {
@@ -218,6 +218,35 @@ const updateBook = async (req, res) => {
   }
 };
 
+const readBook = async (req, res) => {
+  try {
+    const bookId = parseInt(req.params.bookId);
+    const userId = req.user.id;
+
+    const subscription = await subscriptions.findAll({
+      where: { user_id: userId },
+    });
+
+    if (subscription.length < 1)
+      return res.status(403).send({
+        message: 'you do not have active subscription',
+      });
+
+    const result = await books.findOne({
+      where: { id: bookId },
+    });
+
+    return res.status(200).send({
+      message: 'data retrieved successfully',
+      data: result.content,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: 'something went wrong',
+    });
+  }
+};
+
 module.exports = {
   allBooks,
   bookById,
@@ -227,4 +256,5 @@ module.exports = {
   bookByCategories,
   deleteBook,
   updateBook,
+  readBook,
 };

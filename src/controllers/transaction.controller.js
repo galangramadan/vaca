@@ -42,7 +42,7 @@ const newTransactions = async (req, res) => {
         message: `please complete the previous transaction first`,
       });
 
-    const transactionDetail = await transactions.create({
+    await transactions.create({
       title: pricingDetail.title,
       price: pricingDetail.price,
       account_number: account_number,
@@ -55,7 +55,6 @@ const newTransactions = async (req, res) => {
 
     return res.status(201).send({
       message: 'new transaction has been created',
-      data: transactionDetail,
     });
   } catch (error) {
     return res.status(400).send({
