@@ -181,7 +181,17 @@ const bookByCategories = async (req, res) => {
 
 const deleteBook = async (req, res) => {
   try {
+    const userId = req.user.id;
     const bookId = parseInt(req.params.bookId);
+
+    const user = await users.findOne({
+      where: { id: userId },
+    });
+
+    if (user.role != 'admin')
+      return res.status(403).send({
+        message: 'forbidden, only admin can delete book',
+      });
 
     const result = await books.findOne({
       where: { id: bookId },
@@ -198,7 +208,7 @@ const deleteBook = async (req, res) => {
     });
 
     return res.status(200).send({
-      message: 'data retrieved successfully',
+      message: 'book deleted successfully',
       data: deletedItem,
     });
   } catch (error) {
