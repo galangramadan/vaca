@@ -150,9 +150,59 @@ const allTransactions = async (req, res) => {
   }
 };
 
+const transactionStatus = async (req, res) => {
+  try {
+    const transactionId = parseInt(req.params.transactionId);
+    const userIsLoginId = req.user.id;
+
+    const user = await users.findOne({
+      where: { id: userIsLoginId },
+    });
+
+    if (user.role != 'admin')
+      return res.status(403).send({
+        message: 'forbidden, only admin can update this data',
+      });
+
+    if (!transactionId)
+      return res.status(400).send({
+        message: 'no transaction id provided',
+      });
+
+    if (req.body.status != 'success' && req.body.status != 'failed')
+      return res.status(400).send({
+        message: 'invalid input',
+      });
+
+    await transactions.update(
+      {
+        status: req.body.status,
+      },
+      { where: { id: transactionId } }
+    );
+
+    const result = await transactions.findOne(
+      {
+        status: req.body.status,
+      },
+      { where: { id: transactionId } }
+    );
+
+    return res.status(201).send({
+      message: 'status updated successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: 'something went wrong',
+    });
+  }
+};
+
 module.exports = {
   newTransactions,
   transactionById,
   transactionByUserId,
   allTransactions,
+  transactionStatus,
 };
