@@ -4,7 +4,7 @@ const cloudinary = require('../utils/cloudinary');
 const addBook = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { title, author, description, category_id } = req.body;
+    const { title, author, description, content, category_id } = req.body;
 
     const user = await users.findOne({
       where: { id: userId },
@@ -15,7 +15,14 @@ const addBook = async (req, res) => {
         message: 'forbidden, only admin can access',
       });
 
-    if (!title || !req.file.path || !author || !description || !category_id)
+    if (
+      !title ||
+      !req.file.path ||
+      !author ||
+      !description ||
+      !content ||
+      !category_id
+    )
       return res.status(400).send({
         message: 'all field must be filled!',
       });
@@ -36,6 +43,7 @@ const addBook = async (req, res) => {
       image: result.secure_url,
       author: author,
       description: description,
+      content: content,
       category_id: category_id,
     });
 
@@ -44,7 +52,7 @@ const addBook = async (req, res) => {
     });
   } catch (error) {
     res.status(400).send({
-      message: error,
+      message: 'something went wrong',
     });
   }
 };
