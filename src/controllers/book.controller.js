@@ -171,9 +171,45 @@ const deleteBook = async (req, res) => {
         data: result,
       });
 
+    const deletedItem = await books.destroy({
+      where: { id: bookId },
+    });
+
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: result,
+      data: deletedItem,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: error,
+    });
+  }
+};
+
+const updateBook = async (req, res) => {
+  try {
+    const { id, title, image, author, description, category_id } = req.body;
+
+    if (!id || !title || !image || !author || !description || !category_id)
+      return res.status(400).send({
+        message: 'all field must be filled!',
+      });
+
+    const updatedBooks = await books.update(
+      {
+        title: title,
+        image: image,
+        author: author,
+        description: description,
+        category_id: category_id,
+      },
+      {
+        where: { id: id },
+      }
+    );
+
+    return res.status(201).send({
+      message: 'Data successfully updated',
     });
   } catch (error) {
     return res.status(400).send({
@@ -190,4 +226,5 @@ module.exports = {
   allCategories,
   bookByCategories,
   deleteBook,
+  updateBook,
 };
