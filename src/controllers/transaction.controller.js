@@ -124,4 +124,35 @@ const transactionByUserId = async (req, res) => {
   }
 };
 
-module.exports = { newTransactions, transactionById, transactionByUserId };
+const allTransactions = async (req, res) => {
+  try {
+    const userIsLoginId = req.user.id;
+
+    const user = await users.findOne({
+      where: { id: userIsLoginId },
+    });
+
+    if (user.role != 'admin')
+      return res.status(403).send({
+        message: 'forbidden, only admin can access this data',
+      });
+
+    const result = await transactions.findAll();
+
+    return res.status(200).send({
+      message: 'data retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      message: 'something went wrong',
+    });
+  }
+};
+
+module.exports = {
+  newTransactions,
+  transactionById,
+  transactionByUserId,
+  allTransactions,
+};
