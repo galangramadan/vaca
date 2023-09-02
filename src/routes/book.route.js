@@ -21,7 +21,7 @@ router.get(`/search`, bookByTitle);
 router.get('/categories', allCategories);
 router.get('/categories/:name', bookByCategories);
 router.get('/read/:bookId', verifyToken, readBook);
-router.put('/update', updateBook);
+router.put('/update', verifyToken, updateBook);
 router.delete(`/id/:bookId`, verifyToken, deleteBook);
 router.post('/add', verifyToken, upload.single('image'), addBook);
 

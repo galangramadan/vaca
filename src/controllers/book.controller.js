@@ -210,9 +210,19 @@ const deleteBook = async (req, res) => {
 
 const updateBook = async (req, res) => {
   try {
-    const { id, title, image, author, description, category_id } = req.body;
+    const userId = req.user.id;
+    const { id, title, author, description, content, category_id } = req.body;
 
-    if (!id || !title || !image || !author || !description || !category_id)
+    const user = await users.findOne({
+      where: { id: userId },
+    });
+
+    if (user.role != 'admin')
+      return res.status(403).send({
+        message: 'forbidden, only admin can update book',
+      });
+
+    if (!id || !title || !author || !description || !content || !category_id)
       return res.status(400).send({
         message: 'all field must be filled!',
       });
@@ -220,9 +230,9 @@ const updateBook = async (req, res) => {
     const updatedBooks = await books.update(
       {
         title: title,
-        image: image,
         author: author,
         description: description,
+        content: content,
         category_id: category_id,
       },
       {
