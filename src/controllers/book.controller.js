@@ -80,7 +80,14 @@ const bookById = async (req, res) => {
 
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: result,
+      data: {
+        id: result.id,
+        title: result.title,
+        image: result.image,
+        author: result.author,
+        description: result.description,
+        category_id: result.category_id,
+      },
     });
   } catch (error) {
     return res.status(400).send({
@@ -105,7 +112,14 @@ const bookByTitle = async (req, res) => {
 
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: result,
+      data: {
+        id: result.id,
+        title: result.title,
+        image: result.image,
+        author: result.author,
+        description: result.description,
+        category_id: result.category_id,
+      },
     });
   } catch (error) {
     return res.status(400).send({
