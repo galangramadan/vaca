@@ -16,8 +16,8 @@ const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
 router.get('/detail', verifyToken, userDetail);
-router.put('/updateuser', verifyToken, updateUser);
-router.put('/changepassword', verifyToken, changePassword);
+router.put('/update', verifyToken, updateUser);
+router.put('/password', verifyToken, changePassword);
 router.delete('/delete', verifyToken, deleteUser);
 
 router.post('/avatar', verifyToken, upload.single('avatar'), avatar);

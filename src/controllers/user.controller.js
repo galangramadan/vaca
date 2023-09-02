@@ -137,12 +137,14 @@ const userDetail = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { role, name, address } = req.body;
+    const { name, phone_number, gender, date_of_birth, address } = req.body;
 
     const updateData = await users.update(
       {
-        potition: role,
         name: name,
+        phone_number: phone_number,
+        gender: gender,
+        date_of_birth: date_of_birth,
         address: address,
       },
       { where: { id: userId } }
