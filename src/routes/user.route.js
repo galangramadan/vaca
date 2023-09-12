@@ -19,7 +19,6 @@ router.get('/detail', verifyToken, userDetail);
 router.put('/update', verifyToken, updateUser);
 router.put('/password', verifyToken, changePassword);
 router.delete('/delete', verifyToken, deleteUser);
-
 router.post('/avatar', verifyToken, upload.single('avatar'), avatar);
 
 module.exports = router;

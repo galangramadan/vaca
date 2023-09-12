@@ -98,15 +98,45 @@ const transactionByUserId = async (req, res) => {
     const userId = parseInt(req.params.userId);
     const userIsLoginId = req.user.id;
 
-    const result = await transactions.findAll({
-      where: { user_id: userId },
+    const user = await users.findOne({
+      where: { id: userIsLoginId },
     });
+
+    if (user.id == userId || user.role == 'admin') {
+      const result = await transactions.findAll({
+        where: { user_id: userId },
+      });
+
+      return res.status(200).send({
+        message: 'data retrieved successfully',
+        data: result,
+      });
+    } else {
+      return res.status(403).send({
+        message: 'forbidden, only admin or its user can access this data ',
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      message: 'something went wrong',
+    });
+  }
+};
+
+const pendingTransactionByUserId = async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const userIsLoginId = req.user.id;
 
     const user = await users.findOne({
       where: { id: userIsLoginId },
     });
 
     if (user.id == userId || user.role == 'admin') {
+      const result = await transactions.findAll({
+        where: { user_id: userId, status: 'pending' },
+      });
+
       return res.status(200).send({
         message: 'data retrieved successfully',
         data: result,
@@ -208,6 +238,7 @@ module.exports = {
   newTransactions,
   transactionById,
   transactionByUserId,
+  pendingTransactionByUserId,
   allTransactions,
   transactionStatus,
 };
