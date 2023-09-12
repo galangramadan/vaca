@@ -123,18 +123,26 @@ const transactionByUserId = async (req, res) => {
   }
 };
 
-const pendingTransactionByUserId = async (req, res) => {
+const transactionByUserIdAndStatus = async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
     const userIsLoginId = req.user.id;
+    const status = req.query.status;
+
+    console.log(status);
 
     const user = await users.findOne({
       where: { id: userIsLoginId },
     });
 
+    if (status != 'pending' && status != 'success' && status != 'failed')
+      return res.status(400).send({
+        message: 'invalid status input',
+      });
+
     if (user.id == userId || user.role == 'admin') {
       const result = await transactions.findAll({
-        where: { user_id: userId, status: 'pending' },
+        where: { user_id: userId, status: status },
       });
 
       return res.status(200).send({
@@ -238,7 +246,7 @@ module.exports = {
   newTransactions,
   transactionById,
   transactionByUserId,
-  pendingTransactionByUserId,
+  transactionByUserIdAndStatus,
   allTransactions,
   transactionStatus,
 };
