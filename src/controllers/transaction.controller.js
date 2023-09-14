@@ -57,8 +57,9 @@ const newTransactions = async (req, res) => {
       message: 'new transaction has been created',
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -87,8 +88,9 @@ const transactionById = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -117,8 +119,9 @@ const transactionByUserId = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -155,8 +158,9 @@ const transactionByUserIdAndStatus = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -181,8 +185,9 @@ const allTransactions = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -236,8 +241,9 @@ const transactionStatus = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };

@@ -51,8 +51,9 @@ const addBook = async (req, res) => {
       messsage: 'book added successfully',
     });
   } catch (error) {
-    res.status(400).send({
+    res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -98,8 +99,9 @@ const bookById = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -130,8 +132,9 @@ const bookByTitle = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -145,8 +148,9 @@ const allCategories = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -173,8 +177,9 @@ const bookByCategories = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -212,8 +217,9 @@ const deleteBook = async (req, res) => {
       data: deletedItem,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -254,8 +260,9 @@ const updateBook = async (req, res) => {
       message: 'Data successfully updated',
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -283,8 +290,9 @@ const readBook = async (req, res) => {
       data: result.content,
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };

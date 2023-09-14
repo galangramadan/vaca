@@ -8,7 +8,7 @@ const allPricing = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
       data: error,
     });
@@ -52,7 +52,7 @@ const updatePricing = async (req, res) => {
       message: 'pricing updated successfully',
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
       data: error,
     });
