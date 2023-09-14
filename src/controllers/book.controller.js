@@ -63,9 +63,20 @@ const allBooks = async (req, res) => {
   try {
     const result = await books.findAll();
 
+    const data = result.map((elm) => {
+      return {
+        id: elm.id,
+        title: elm.title,
+        image: elm.image,
+        author: elm.author,
+        description: elm.description,
+        category_id: elm.category_id,
+      };
+    });
+
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: result,
+      data: data,
     });
   } catch (error) {
     return res.status(400).send({
@@ -177,9 +188,20 @@ const bookByCategories = async (req, res) => {
         data: result,
       });
 
+    const data = result.map((elm) => {
+      return {
+        id: elm.id,
+        title: elm.title,
+        image: elm.image,
+        author: elm.author,
+        description: elm.description,
+        category_id: elm.category_id,
+      };
+    });
+
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: result,
+      data: data,
     });
   } catch (error) {
     return res.status(500).send({
