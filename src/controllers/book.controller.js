@@ -300,7 +300,7 @@ const readBook = async (req, res) => {
     const userId = req.user.id;
 
     const subscription = await subscriptions.findAll({
-      where: { user_id: userId },
+      where: { user_id: userId, expiry_date: { [Op.gte]: new Date() } },
     });
 
     if (subscription.length < 1)
