@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { books, users, categories, subscriptions } = require('../models');
 const cloudinary = require('../utils/cloudinary');
 
@@ -110,8 +111,8 @@ const bookByTitle = async (req, res) => {
   try {
     const bookQuery = req.query.title;
 
-    const result = await books.findOne({
-      where: { title: bookQuery },
+    const result = await books.findAll({
+      where: { title: { [Op.substring]: bookQuery } },
     });
 
     if (result == null)
@@ -120,16 +121,20 @@ const bookByTitle = async (req, res) => {
         data: result,
       });
 
+    const data = result.map((elm) => {
+      return {
+        id: elm.id,
+        title: elm.title,
+        image: elm.image,
+        author: elm.author,
+        description: elm.description,
+        category_id: elm.category_id,
+      };
+    });
+
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: {
-        id: result.id,
-        title: result.title,
-        image: result.image,
-        author: result.author,
-        description: result.description,
-        category_id: result.category_id,
-      },
+      data: data,
     });
   } catch (error) {
     return res.status(500).send({
