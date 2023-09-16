@@ -15,16 +15,19 @@ module.exports = {
     await queryInterface.bulkInsert('categories', [
       {
         name: 'Fiksi',
+        image: 'images/fiksi.svg',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         name: 'Sejarah',
+        image: 'images/history.svg',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         name: 'Gaya Hidup',
+        image: 'images/life style.svg',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
