@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { books, users, categories, subscriptions } = require('../models');
 const cloudinary = require('../utils/cloudinary');
 
@@ -51,8 +52,9 @@ const addBook = async (req, res) => {
       messsage: 'book added successfully',
     });
   } catch (error) {
-    res.status(400).send({
+    res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -61,9 +63,20 @@ const allBooks = async (req, res) => {
   try {
     const result = await books.findAll();
 
+    const data = result.map((elm) => {
+      return {
+        id: elm.id,
+        title: elm.title,
+        image: elm.image,
+        author: elm.author,
+        description: elm.description,
+        category_id: elm.category_id,
+      };
+    });
+
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: result,
+      data: data,
     });
   } catch (error) {
     return res.status(400).send({
@@ -98,8 +111,9 @@ const bookById = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -108,8 +122,8 @@ const bookByTitle = async (req, res) => {
   try {
     const bookQuery = req.query.title;
 
-    const result = await books.findOne({
-      where: { title: bookQuery },
+    const result = await books.findAll({
+      where: { title: { [Op.substring]: bookQuery } },
     });
 
     if (result == null)
@@ -118,20 +132,25 @@ const bookByTitle = async (req, res) => {
         data: result,
       });
 
+    const data = result.map((elm) => {
+      return {
+        id: elm.id,
+        title: elm.title,
+        image: elm.image,
+        author: elm.author,
+        description: elm.description,
+        category_id: elm.category_id,
+      };
+    });
+
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: {
-        id: result.id,
-        title: result.title,
-        image: result.image,
-        author: result.author,
-        description: result.description,
-        category_id: result.category_id,
-      },
+      data: data,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -145,8 +164,9 @@ const allCategories = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -168,13 +188,25 @@ const bookByCategories = async (req, res) => {
         data: result,
       });
 
+    const data = result.map((elm) => {
+      return {
+        id: elm.id,
+        title: elm.title,
+        image: elm.image,
+        author: elm.author,
+        description: elm.description,
+        category_id: elm.category_id,
+      };
+    });
+
     return res.status(200).send({
       message: 'data retrieved successfully',
-      data: result,
+      data: data,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -212,8 +244,9 @@ const deleteBook = async (req, res) => {
       data: deletedItem,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -254,8 +287,9 @@ const updateBook = async (req, res) => {
       message: 'Data successfully updated',
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -266,7 +300,7 @@ const readBook = async (req, res) => {
     const userId = req.user.id;
 
     const subscription = await subscriptions.findAll({
-      where: { user_id: userId },
+      where: { user_id: userId, expiry_date: { [Op.gte]: new Date() } },
     });
 
     if (subscription.length < 1)
@@ -283,8 +317,9 @@ const readBook = async (req, res) => {
       data: result.content,
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };

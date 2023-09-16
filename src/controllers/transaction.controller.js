@@ -57,8 +57,9 @@ const newTransactions = async (req, res) => {
       message: 'new transaction has been created',
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -87,8 +88,9 @@ const transactionById = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -98,15 +100,15 @@ const transactionByUserId = async (req, res) => {
     const userId = parseInt(req.params.userId);
     const userIsLoginId = req.user.id;
 
-    const result = await transactions.findAll({
-      where: { user_id: userId },
-    });
-
     const user = await users.findOne({
       where: { id: userIsLoginId },
     });
 
     if (user.id == userId || user.role == 'admin') {
+      const result = await transactions.findAll({
+        where: { user_id: userId },
+      });
+
       return res.status(200).send({
         message: 'data retrieved successfully',
         data: result,
@@ -117,8 +119,48 @@ const transactionByUserId = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
+    });
+  }
+};
+
+const transactionByUserIdAndStatus = async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const userIsLoginId = req.user.id;
+    const status = req.query.status;
+
+    console.log(status);
+
+    const user = await users.findOne({
+      where: { id: userIsLoginId },
+    });
+
+    if (status != 'pending' && status != 'success' && status != 'failed')
+      return res.status(400).send({
+        message: 'invalid status input',
+      });
+
+    if (user.id == userId || user.role == 'admin') {
+      const result = await transactions.findAll({
+        where: { user_id: userId, status: status },
+      });
+
+      return res.status(200).send({
+        message: 'data retrieved successfully',
+        data: result,
+      });
+    } else {
+      return res.status(403).send({
+        message: 'forbidden, only admin or its user can access this data ',
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -143,8 +185,9 @@ const allTransactions = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -198,8 +241,9 @@ const transactionStatus = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -208,6 +252,7 @@ module.exports = {
   newTransactions,
   transactionById,
   transactionByUserId,
+  transactionByUserIdAndStatus,
   allTransactions,
   transactionStatus,
 };

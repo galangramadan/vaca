@@ -26,7 +26,7 @@ const register = async (req, res) => {
       message: 'register success',
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
       error: error,
     });
@@ -78,8 +78,9 @@ const login = async (req, res) => {
       token: token,
     });
   } catch (error) {
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -106,8 +107,9 @@ const avatar = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).send({
-      message: error,
+    return res.status(500).send({
+      message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -127,8 +129,9 @@ const userDetail = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'something went wrong',
+      data: error,
     });
   }
 };
@@ -159,8 +162,8 @@ const updateUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).send({
-      message: "Can't update user data",
+    return res.status(500).send({
+      message: 'something went wrong',
       data: error,
     });
   }
@@ -210,8 +213,8 @@ const changePassword = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).send({
-      message: "Can't change password",
+    return res.status(500).send({
+      message: 'something went wrong',
       data: error,
     });
   }
@@ -230,8 +233,8 @@ const deleteUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).send({
-      message: "Can't deleted User",
+    return res.status(500).send({
+      message: 'something went wrong',
       data: error,
     });
   }
