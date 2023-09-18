@@ -15,6 +15,25 @@ const allPricing = async (req, res) => {
   }
 };
 
+const pricingById = async (req, res) => {
+  try {
+    const pricingId = parseInt(req.params.pricingId);
+
+    const result = await pricing.findOne({
+      where: { id: pricingId },
+    });
+
+    return res.status(200).send({
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: 'something wrong',
+      data: error,
+    });
+  }
+};
+
 const updatePricing = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -59,4 +78,4 @@ const updatePricing = async (req, res) => {
   }
 };
 
-module.exports = { allPricing, updatePricing };
+module.exports = { allPricing, pricingById, updatePricing };
