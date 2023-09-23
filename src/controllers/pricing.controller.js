@@ -36,9 +36,9 @@ const pricingById = async (req, res) => {
 
 const updatePricing = async (req, res) => {
   try {
+    const pricingId = parseInt(req.params.pricingId);
     const userId = req.user.id;
-    const { pricingId, title, price, duration, description, details } =
-      req.body;
+    const { title, price, duration, description, details } = req.body;
 
     const user = await users.findOne({
       where: { id: userId },
