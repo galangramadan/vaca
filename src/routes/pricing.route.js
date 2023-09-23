@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get('/', allPricing);
 router.get('/id/:pricingId', pricingById);
-router.put('/update', verifyToken, updatePricing);
+router.put(`/update/id/:pricingId`, verifyToken, updatePricing);
 
 module.exports = router;
