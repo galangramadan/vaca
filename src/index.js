@@ -33,3 +33,5 @@ app.use('/api/subscription', subscriptionRoute);
 app.listen(PORT, () => {
   console.log('Server is running on ' + PORT);
 });
+
+module.exports = app;

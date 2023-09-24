@@ -9,6 +9,7 @@ module.exports = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     dialect: 'mysql',
+    dialectModule: require('mysql2'),
   },
   // test: {
   //   username: 'root',
@@ -17,11 +18,13 @@ module.exports = {
   //   host: '127.0.0.1',
   //   dialect: 'mysql',
   // },
-  // production: {
-  //   username: 'root',
-  //   password: null,
-  //   database: 'database_production',
-  //   host: '127.0.0.1',
-  //   dialect: 'mysql',
-  // },
+  production: {
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
+    host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT,
+    dialect: 'mysql',
+    dialectModule: require('mysql2'),
+  },
 };
